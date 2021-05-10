@@ -1,0 +1,6 @@
+py7zr==0.15.1
+treelib==1.6.1
+requests==2.25.1
+beautifulsoup4==4.9.3
+pycryptodome==3.10.1
+PyQt5==5.15.4
