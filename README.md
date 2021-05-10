@@ -1,4 +1,5 @@
 # TomatoTools
+[![GitHub stars](https://img.shields.io/github/stars/ht0Ruial/TomatoTools)](https://github.com/ht0Ruial/TomatoTools/stargazers) [![GitHub forks](https://img.shields.io/github/forks/ht0Ruial/TomatoTools)](https://github.com/ht0Ruial/TomatoTools/network) [![GitHub release](https://img.shields.io/github/release/ht0Ruial/TomatoTools.svg)](https://github.com/ht0Ruial/TomatoTools/releases/latest) [![GitHub issues](https://img.shields.io/github/issues/ht0Ruial/TomatoTools)](https://github.com/ht0Ruial/TomatoTools/issues)
 
 TomatoTools 拥有CTF杂项中常见的编码密码算法的加密和解密方式，还具有自动提取flag的能力，以及异常灵活的插件模块。
 
