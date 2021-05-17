@@ -78,12 +78,12 @@ python ./TomatoTools.py
 以下为 *dicts* 内各个键的详解，
 
 ```python
-    name # 添加的插件名称
-    crypto_name # 函数的名称
-    range # 密码表范围，必须用正则来表示，base16是[0-9a-f]
-    alphabet_num # 密码表的字符个数，base32[A-Z2-7=]是33个，rot5[0-9]是10个
-    key # （这里的key可以直接删掉，删掉后默认为False，也可以直接写 False）
-        # 针对某些需要输入密钥的才能解密的密文，比如rabbit，此时key的值需为 True
+name # 添加的插件名称
+crypto_name # 函数的名称
+range # 密码表范围，必须用正则来表示，base16是[0-9a-f]
+alphabet_num # 密码表的字符个数，base32[A-Z2-7=]是33个，rot5[0-9]是10个
+key # （这里的key可以直接删掉，删掉后默认为False，也可以直接写 False）
+    # 针对某些需要输入密钥的才能解密的密文，比如rabbit，此时key的值需为 True
 ```
 
 

@@ -13,7 +13,7 @@ from GUI.ui_QWFormDoc import Ui_QWFormDoc
 
 
 ##导入自定义加解密插件
-with open(".\Plug\config.json",'r+',encoding='utf-8') as f:
+with open("./Plug/config.json",'r+',encoding='utf-8') as f:
    Crypto_json = json.load(f)
 for i in Crypto_json['Plug']:
    for j in Crypto_json['Plug'][i]:
@@ -206,7 +206,7 @@ class QmyFormDoc(QWidget):
       
 
       ## 加载json
-      with open(".\Plug\config.json",'r+',encoding='utf-8') as f:
+      with open("./Plug/config.json",'r+',encoding='utf-8') as f:
          Crypto_json = json.load(f)
 
       ##添加自定义加解密插件及其信号

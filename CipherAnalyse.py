@@ -13,7 +13,7 @@ from Crypto_func import *
 from GUI.Ui_Cipher import Ui_Cipher
 
 # 导入自定义解密插件
-with open(".\Plug\config.json", 'r+', encoding='utf-8') as f:
+with open("./Plug/config.json", 'r+', encoding='utf-8') as f:
     Crypto_json = json.load(f)
 for i in Crypto_json['Plug']:
     for j in Crypto_json['Plug'][i]:
@@ -32,7 +32,7 @@ def Cipherase(cryptostr, value):
     maby_list_name = []  # 密文大概率在的列表，长度与密文表相等-名字
     back_list_name = []  # 不可能的加密方式-名字
 
-    with open(".\Plug\config.json", 'r', encoding='utf-8') as f:
+    with open("./Plug/config.json", 'r', encoding='utf-8') as f:
         Crypto_json = json.load(f)
     for i in Crypto_json["Base_crypto"]:
         if len(redo_crypto) <= int(i["alphabet_num"]):
@@ -136,7 +136,7 @@ class QmyCipher(QMainWindow):
     @pyqtSlot(list)
     def Cipherxxx(self, result):
         # 由result中的crypto_name获取name
-        with open(".\Plug\config.json", 'r', encoding='utf-8') as f:
+        with open("./Plug/config.json", 'r', encoding='utf-8') as f:
             Crypto_json = json.load(f)
         name_result = []
         for i in result:

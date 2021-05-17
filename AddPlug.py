@@ -44,7 +44,7 @@ class QmyAddPlug(QMainWindow):
             return
 
         # 加载json
-        with open(".\Plug\config.json", 'r+', encoding='utf-8') as f:
+        with open("./Plug/config.json", 'r+', encoding='utf-8') as f:
             Crypto_json = json.load(f)
 
         file_ss = filename.rsplit('/')
@@ -74,7 +74,7 @@ class QmyAddPlug(QMainWindow):
                 if crypto_type == "decode":
                     Crypto_json['Base_crypto'].append(test.dicts)
                 Crypto_json['Plug'][crypto_type].append(test.dicts)
-                with open(".\Plug\config.json", 'w+', encoding='utf-8') as f:
+                with open("./Plug/config.json", 'w+', encoding='utf-8') as f:
                     f.write(json.dumps(Crypto_json))
                 try:
                     copyfile(filename, curPath+file_ss[-1])
@@ -95,7 +95,7 @@ class QmyAddPlug(QMainWindow):
                 Crypto_json['Plug'][crypto_type].remove(test.dicts)
                 if crypto_type == "decode":
                     Crypto_json['Base_crypto'].remove(test.dicts)
-                with open(".\Plug\config.json", 'w+', encoding='utf-8') as f:
+                with open("./Plug/config.json", 'w+', encoding='utf-8') as f:
                     f.write(json.dumps(Crypto_json))
                 remove(filename)
                 QMessageBox.about(

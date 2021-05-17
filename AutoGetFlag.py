@@ -18,7 +18,7 @@ from Crypto_func import *
 from GUI.Ui_GetFlag import Ui_GetFlag
 
 # 添加自定义加解密插件及其
-with open(".\Plug\config.json", 'r+', encoding='utf-8') as f:
+with open("./Plug/config.json", 'r+', encoding='utf-8') as f:
     Crypto_json = json.load(f)
 for i in Crypto_json['Plug']:
     for j in Crypto_json['Plug'][i]:
@@ -52,7 +52,7 @@ class Cipher_Thread(QThread):
         self.log = log
 
     def name_c(self, result):
-        with open(".\Plug\config.json", 'r', encoding='utf-8') as f:
+        with open("./Plug/config.json", 'r', encoding='utf-8') as f:
             Crypto_json = json.load(f)
         # 由result中的crypto_name获取name
         name_result = {}  # {"crypto_name":"name",...}
