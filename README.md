@@ -2,6 +2,9 @@
 [![GitHub stars](https://img.shields.io/github/stars/ht0Ruial/TomatoTools)](https://github.com/ht0Ruial/TomatoTools/stargazers) [![GitHub forks](https://img.shields.io/github/forks/ht0Ruial/TomatoTools)](https://github.com/ht0Ruial/TomatoTools/network) [![GitHub release](https://img.shields.io/github/release/ht0Ruial/TomatoTools.svg)](https://github.com/ht0Ruial/TomatoTools/releases/latest) [![GitHub issues](https://img.shields.io/github/issues/ht0Ruial/TomatoTools)](https://github.com/ht0Ruial/TomatoTools/issues)
 
 TomatoTools 拥有CTF杂项中常见的编码密码算法的加密和解密方式，还具有自动提取flag的能力，以及异常灵活的插件模块。
+<br><br>
+TomatoTools 原理和实战案例
+[TomatoTools 一款CTF杂项利器 - FreeBuf网络安全行业门户](https://www.freebuf.com/sectool/275844.html)
 
 ![](https://4eaa61a63958b1a-1258343929.cos.ap-nanjing.myqcloud.com/image-20210508142729185.png)
 
@@ -33,6 +36,21 @@ TomatoTools 拥有CTF杂项中常见的编码密码算法的加密和解密方�
 - Shellcode/Handycode/URL
 - 敲击码/A1z26密码/Quoted-printable编码
 - 二进制010编码
+
+
+
+
+## 更新说明
+v1.0.2
+- **自动提flag** 支持设定深度
+- **关于** 里增加三个功能开关
+- 插件dicts新增replace替换参数
+- 新增解密插件 *斜杠ASCII码转换*、*HTML实体编码*
+- 修复bug
+
+v1.0.1
+- 新增加密插件 *全部大写*、*全部小写*、*字符倒叙*
+- 修复bug
 
 
 
@@ -78,12 +96,12 @@ python ./TomatoTools.py
 以下为 *dicts* 内各个键的详解，
 
 ```python
-name # 添加的插件名称
-crypto_name # 函数的名称
-range # 密码表范围，必须用正则来表示，base16是[0-9a-f]
-alphabet_num # 密码表的字符个数，base32[A-Z2-7=]是33个，rot5[0-9]是10个
-key # （这里的key可以直接删掉，删掉后默认为False，也可以直接写 False）
-    # 针对某些需要输入密钥的才能解密的密文，比如rabbit，此时key的值需为 True
+name #(必需) 添加的插件名称
+crypto_name #(必需) 函数的名称
+range #(解密插件必需) 密码表范围，必须用正则来表示，base16是[0-9a-f] 
+alphabet_num #(解密插件必需)密码表的字符个数，base32[A-Z2-7=]是33个，rot5[0-9]是10个 
+key #(默认False)针对某些需要输入密钥的才能加解密的密文，比如rabbit，此时key的值需为 True
+replace #(默认False)当启用全局替换后，若插件中存在参数，密文将会被替换
 ```
 
 
@@ -100,9 +118,7 @@ key # （这里的key可以直接删掉，删掉后默认为False，也可以直
 dicts={
     "name":"abcdefg加密",
     "crypto_name":"abcdefg",
-    "range":"[1-8]",
-    "alphabet_num":"8",
-    "key":"True"
+    "key":True
 }
 
 def abcdefg(cryptostr,key):
@@ -114,7 +130,7 @@ def abcdefg(cryptostr,key):
 
 **Demo2：**
 
-不需要输入密钥 *key* 的插件
+不需要输入密钥 *key* 的插件，但支持密文替换。
 
 ```python
 # filename: test.py
@@ -123,8 +139,9 @@ dicts={
     "name":"test解密",
     "crypto_name":"test",
     "range":"[1-8]",
-    "alphabet_num":"8",
-    "key":"False"
+    "alphabet_num":8,
+    "key":False,
+    "replace":True
 }
 
 def test(cryptostr):

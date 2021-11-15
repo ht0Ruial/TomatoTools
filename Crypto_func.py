@@ -8,6 +8,7 @@ from bs4 import BeautifulSoup
 from ThirdPartyScripts.jjdecode import JJDecoder
 from ThirdPartyScripts.jjencode import JJEncoder
 from ThirdPartyScripts.Buddha import DecryptFoYue, DecryptRuShiWoWen
+from ThirdPartyScripts.jother import Jother
 
 
 def cry_post(url, cry_data):
@@ -636,7 +637,6 @@ def en_Caesar(cryptostr, key):
     return result.encode()
 
 
-
 def en_Fence(cryptostr, key):
     cc = ''
     for i in range(0, int(key)):
@@ -696,7 +696,7 @@ def de_010(cryptostr):
     result = ''
     cc = cryptostr.split(" ")
     for i in cc:
-        result += chr(int(i,2))
+        result += chr(int(i, 2))
     return result.encode()
 
 
@@ -705,4 +705,3 @@ def en_010(cryptostr):
     for i in cryptostr:
         result += " {}".format(bin(ord(i))[2:])
     return result[1:].encode()
-

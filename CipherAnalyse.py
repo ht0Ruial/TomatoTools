@@ -1,7 +1,6 @@
 # GUI 独立程序 密文分析
 
 import sys
-import os
 import json
 from re import compile
 
@@ -109,11 +108,10 @@ class Cipher_Thread(QThread):
 
     def __init__(self, cryptostr, value):
         super().__init__()
-        self.cryptostr = cryptostr  # 密文
-        self.value = value  # 密钥
+        self.cryptostr = cryptostr
+        self.value = value
 
     def run(self):
-
         # 识别密文
         self.result = Cipherase(self.cryptostr, self.value)  # 调用函数分析密文
 
@@ -128,6 +126,12 @@ class QmyCipher(QMainWindow):
         self.ui = Ui_Cipher()
         self.ui.setupUi(self)
 
+        f = open("./Plug/config.json", 'r', encoding='utf-8')
+        self.Crypto_json = json.load(f)
+        f.close()
+        if not self.Crypto_json['G_S_Crypk']:
+            self.ui.lineEdit_2.setVisible(False)
+
         self.__dlgSetHeaders = None
         self.setAutoFillBackground(True)
 
@@ -137,10 +141,10 @@ class QmyCipher(QMainWindow):
     def Cipherxxx(self, result):
         # 由result中的crypto_name获取name
         with open("./Plug/config.json", 'r', encoding='utf-8') as f:
-            Crypto_json = json.load(f)
+            self.Crypto_json = json.load(f)
         name_result = []
         for i in result:
-            for j in Crypto_json["Base_crypto"]:
+            for j in self.Crypto_json["Base_crypto"]:
                 if i == j["crypto_name"]:
                     name_result.append(j["name"])
         # 隐藏label
@@ -156,7 +160,9 @@ class QmyCipher(QMainWindow):
     @pyqtSlot()
     def on_pushButton_clicked(self):
         cryptostr = self.ui.plainTextEdit.toPlainText()  # 获取密文
-        value = self.ui.lineEdit_2.text()  # 获取密钥
+        value = ''  # 密钥初始化
+        if self.Crypto_json['G_S_Crypk']:
+            value = self.ui.lineEdit_2.text()  # 获取密钥
         if len(cryptostr) != 0:
             self.ui.label.setVisible(True)  # 显示label控件
             # 加载gif

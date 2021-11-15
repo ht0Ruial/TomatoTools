@@ -1,11 +1,13 @@
 
-dicts={
-    "name":"斜杠ASCII码转换",
-    "crypto_name":"slashASCII",
-    "range":"[0-9/]",
-    "alphabet_num":"11",
-    "key":"False"
+dicts = {
+    "name": "斜杠ASCII码转换",
+    "crypto_name": "slashASCII",
+    "range": "[0-9/]",
+    "alphabet_num": 11,
+    "key": False,
+    "replace": True
 }
+
 
 def slashASCII(cryptostr):
     cc = cryptostr.rsplit("/")

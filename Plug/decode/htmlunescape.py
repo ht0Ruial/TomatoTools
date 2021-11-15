@@ -1,12 +1,12 @@
-import html 
+import html
 
-dicts={
-    "name":"HTML实体编码",
-    "crypto_name":"htmlunescape",
-    "range":"[0-9#&;]",
-    "alphabet_num":"13",
-    "key":"False"
+dicts = {
+    "name": "HTML实体编码",
+    "crypto_name": "htmlunescape",
+    "range": "[0-9#&;]",
+    "alphabet_num": 13
 }
+
 
 def htmlunescape(cryptostr):
     result = html.unescape(cryptostr)

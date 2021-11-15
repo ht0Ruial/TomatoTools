@@ -7,12 +7,13 @@ import sys
 import os
 import json
 import time
+from hashlib import md5
 
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox
 from PyQt5.QtCore import QThread, pyqtSlot, pyqtSignal
 from PyQt5.QtGui import QMovie
 from CipherAnalyse import Cipherase
-from treelib import Tree, Node
+from treelib import Tree
 from subprocess import Popen
 from Crypto_func import *
 from GUI.Ui_GetFlag import Ui_GetFlag
@@ -42,14 +43,15 @@ def Crypto_list_str(crypto_ans, cryptostr):
 
 
 class Cipher_Thread(QThread):
-    signal = pyqtSignal(str, str, str, bool)
+    signal = pyqtSignal(str, str, str, bool, str)
 
-    def __init__(self, cryptostr, keyword, value, log):
+    def __init__(self, cryptostr, keyword, value, log, depth):
         super().__init__()
         self.cryptostr = cryptostr
         self.keyword = keyword
         self.value = value
         self.log = log
+        self.depth = depth
 
     def name_c(self, result):
         with open("./Plug/config.json", 'r', encoding='utf-8') as f:
@@ -85,7 +87,10 @@ class Cipher_Thread(QThread):
         self.res = ''
         filename = ''
         cry_cryptostr = ''
-        while(len(result) != 0 and len(result) < 100):
+        depth_s = True
+        if self.depth != '':
+            depth_num = int(self.depth) - 1
+        while(len(result) != 0 and len(result) < 100 and depth_s):
             # 每轮广度遍历时初始化变量
             temporary = []
             result_dict = {}
@@ -139,6 +144,12 @@ class Cipher_Thread(QThread):
                 break
             result = temporary
             FandS_node = temp_FandS_node
+            if self.depth != '':
+                depth_num = depth_num - 1
+                if depth_num > 0:
+                    depth_s = True
+                else:
+                    depth_s = False
 
         if self.log:
             len_k = ''
@@ -159,15 +170,15 @@ class Cipher_Thread(QThread):
 
             # 最终密文
             cry_fin = cry_path.get_node(len_k[-1]).data
-
-            cry_path.save2file(
-                "./Logs/d59b74dc39de47e8fc67e502beff02e1.txt")
+            cry_fin_md5 = md5((self.cryptostr).encode())
+            cry_path_name = "./Logs/{}.txt".format(cry_fin_md5.hexdigest())
+            cry_path.save2file(cry_path_name)
 
             # 读取解析树
             try:
-                with open("./Logs/d59b74dc39de47e8fc67e502beff02e1.txt", "r", encoding="utf-8") as f:
+                with open(cry_path_name, "r", encoding="utf-8") as f:
                     cry_tree = f.read()
-                os.remove("./Logs/d59b74dc39de47e8fc67e502beff02e1.txt")
+                os.remove(cry_path_name)
             except:
                 pass
 
@@ -178,14 +189,15 @@ class Cipher_Thread(QThread):
             else:
                 cry_cryptostr = self.cryptostr
 
-            txt = "\nflag关键词：{}\n\n密钥：{}\n\n初始密文：{}\n\n解析树：\n{}\n最长解密链：\n{}\n\n最终密文：\n{}\n\n最终解密结果：\n{}\n\n".format(
-                self.keyword, self.value, cry_cryptostr, cry_tree, max_long_cry, cry_fin, self.res)
+            txt = "\nflag关键词：{}\n\n密钥：{}\n\n深度：{}\n\n初始密文：{}\n\n解析树：\n{}\n最长解密链：\n{}\n\n最终密文：\n{}\n\n最终解密结果：\n{}\n\n".format(
+                self.keyword, self.value, self.depth, cry_cryptostr, cry_tree, max_long_cry, cry_fin, self.res)
             filename = "{}.txt".format(time.strftime(
                 "%Y%m%d%H%M%S", time.localtime()))
             with open("./Logs/{}".format(filename), "w", encoding="utf-8") as f:
                 f.write(txt)
 
-        self.signal.emit(self.res, self.keyword, filename, self.log)  # 发出信号
+        self.signal.emit(self.res, self.keyword, filename,
+                         self.log, self.depth)  # 发出信号
 
 
 class QmyGetFlag(QMainWindow):
@@ -194,6 +206,14 @@ class QmyGetFlag(QMainWindow):
         super().__init__(parent)
         self.ui = Ui_GetFlag()
         self.ui.setupUi(self)
+
+        f = open("./Plug/config.json", 'r', encoding='utf-8')
+        self.Crypto_json = json.load(f)
+        f.close()
+        if not self.Crypto_json['G_S_Crypk']:
+            self.ui.lineEdit_2.setVisible(False)
+        if not self.Crypto_json['G_S_Flag']:
+            self.ui.lineEdit_3.setVisible(False)
 
         self.__dlgSetHeaders = None
         self.setAutoFillBackground(True)
@@ -216,7 +236,18 @@ class QmyGetFlag(QMainWindow):
     def on_pushButton_clicked(self):
         cryptostr = self.ui.plainTextEdit.toPlainText()  # 获取密文
         keyword = self.ui.lineEdit.text()  # 获取flag关键词
-        value = self.ui.lineEdit_2.text()  # 获取密钥
+
+        value = ''  # 密钥初始化
+        if self.Crypto_json['G_S_Crypk']:
+            value = self.ui.lineEdit_2.text()  # 获取密钥
+        depth = ''  # 深度初始化
+        if self.Crypto_json['G_S_Flag']:
+            depth = self.ui.lineEdit_3.text()  # 获取深度
+            if depth == '':
+                pass
+            elif not depth.isdigit():  # 判断非数字返回
+                QMessageBox.about(self, "温馨提示", "深度只能为数字！！")
+                return 0
         if len(cryptostr) == 0 or len(keyword) == 0:
             QMessageBox.about(self, "温馨提示", "内容不能为空！！")
             return 0
@@ -230,7 +261,7 @@ class QmyGetFlag(QMainWindow):
         self.ui.label.setMovie(self.loads)
         self.loads.start()
         # 子线程分析密文
-        self.thread = Cipher_Thread(cryptostr, keyword, value, log)
+        self.thread = Cipher_Thread(cryptostr, keyword, value, log, depth)
         self.thread.signal.connect(self.hiddengif)
         self.thread.start()    # 启动线程
 
