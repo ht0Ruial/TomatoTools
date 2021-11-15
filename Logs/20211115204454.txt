@@ -1,0 +1,24 @@
+
+flag关键词：flag
+
+密钥：
+
+深度：
+
+初始密文：LJWXQ2C2GNZXQTLKJUYE4VC2HE======
+
+解析树：
+Path
+└── Base32
+    └── Base64
+        └── flag{123456}
+
+最长解密链：
+Path -> Base32 -> Base64 -> flag{123456}
+
+最终密文：
+flag{123456}
+
+最终解密结果：
+flag{123456}
+
