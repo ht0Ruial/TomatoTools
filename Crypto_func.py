@@ -611,9 +611,9 @@ def de_Caesar(cryptostr):
         cc = []
         for i in cryptostr:
             if i in str1:
-                cc.append(str1[(str1.index(i)+keys) % 25])
+                cc.append(str1[(str1.index(i)+keys) % 26])
             elif i in str2:
-                cc.append(str2[(str2.index(i)+keys) % 25])
+                cc.append(str2[(str2.index(i)+keys) % 26])
             else:
                 cc.append(i)
         dd.append(''.join(cc))
@@ -625,12 +625,12 @@ def en_Caesar(cryptostr, key):
     str1 = string.ascii_lowercase
     str2 = string.ascii_uppercase
     cc = []
-    keys = int(key) % 25
+    keys = int(key) % 26
     for i in cryptostr:
         if i in str1:
-            cc.append(str1[str1.index(i)+int(keys)])
+            cc.append(str1[(str1.index(i)+keys) % 26])
         elif i in str2:
-            cc.append(str2[str2.index(i)+int(keys)])
+            cc.append(str2[(str2.index(i)+keys) % 26])
         else:
             cc.append(i)
     result = ''.join(cc)
