@@ -19,7 +19,7 @@ class QmyAbout(QMainWindow):
         super().__init__(parent)
         self.ui = Ui_About()
         self.ui.setupUi(self)
-        f = open("./Plug\config.json", 'r', encoding='utf-8')
+        f = open("./Plug/config.json", 'r', encoding='utf-8')
         self.Crypto_json = json.load(f)
         f.close()
         if self.Crypto_json['G_S_Replace']:
@@ -37,7 +37,7 @@ class QmyAbout(QMainWindow):
 
     @pyqtSlot()
     def on_checkBox_clicked(self):
-        with open("./Plug\config.json", 'w+', encoding='utf-8') as f:
+        with open("./Plug/config.json", 'w+', encoding='utf-8') as f:
             if self.ui.checkBox.isChecked():
                 self.Crypto_json['G_S_Replace'] = True
                 f.write(json.dumps(self.Crypto_json))
@@ -47,7 +47,7 @@ class QmyAbout(QMainWindow):
 
     @pyqtSlot()
     def on_checkBox_2_clicked(self):
-        with open("./Plug\config.json", 'w+', encoding='utf-8') as f:
+        with open("./Plug/config.json", 'w+', encoding='utf-8') as f:
             if self.ui.checkBox_2.isChecked():
                 self.Crypto_json['G_S_Crypk'] = True
                 f.write(json.dumps(self.Crypto_json))
@@ -57,7 +57,7 @@ class QmyAbout(QMainWindow):
 
     @pyqtSlot()
     def on_checkBox_3_clicked(self):
-        with open("./Plug\config.json", 'w+', encoding='utf-8') as f:
+        with open("./Plug/config.json", 'w+', encoding='utf-8') as f:
             if self.ui.checkBox_3.isChecked():
                 self.Crypto_json['G_S_Flag'] = True
                 f.write(json.dumps(self.Crypto_json))

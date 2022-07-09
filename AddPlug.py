@@ -37,7 +37,7 @@ class QmyAddPlug(QMainWindow):
 
     def Plugss(self, crypto_type, addsub_type):
         lspath = getcwd()  # 当前启动位置
-        curPath = getcwd() + "{}".format("\\Plug\\{}\\".format(crypto_type))  # 获取路径
+        curPath = getcwd() + "{}".format("/Plug/{}/".format(crypto_type))  # 获取路径
         filename = QFileDialog.getOpenFileName(self, "选择你的{}插件".format(crypto_type), curPath,
                                                "文本文件(*.py)")[0]
         if (filename == ""):
@@ -54,7 +54,7 @@ class QmyAddPlug(QMainWindow):
             # 添加
             if self.ui.radioButton.isChecked():
                 file_ss_md5 = '.{}'.format(md5(modulname.encode()).hexdigest())
-                lsfilename = "{}\\Plug\\{}.py".format(
+                lsfilename = "{}/Plug/{}.py".format(
                     lspath, file_ss_md5[1:])  # 临时文件
                 copyfile(filename, lsfilename)
                 test = import_module(file_ss_md5, "Plug")
