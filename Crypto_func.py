@@ -281,7 +281,7 @@ def de_Morse(cryptostr):
         '-----.': '>', '-..-.': '/', '..--..': '?'
     }
     if '/' in cryptostr:
-        cryptostr.replace('/', ' ')
+        cryptostr = cryptostr.replace('/', ' ')
     cc = []
     for i in cryptostr.lower().split(' '):
         cc.append(Morse_dic.get(i))
